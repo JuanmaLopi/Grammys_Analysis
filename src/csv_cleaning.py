@@ -1,12 +1,12 @@
 import pandas as pd
 
-df = pd.read_csv('c:/Users/juanm/Downloads/spotify_dataset.csv')
+spotify = pd.read_csv('c:/Users/juanm/Downloads/spotify_dataset.csv')
 
 # Borrar la fila 65900
-df.drop(df[df.isnull().any(axis=1)].index,inplace=True)
+spotify.drop(spotify[spotify.isnull().any(axis=1)].index,inplace=True)
 
-nulls = df.isnull().sum()
-duplicated = df.duplicated().sum()
+nulls = spotify.isnull().sum()
+duplicated = spotify.duplicated().sum()
 
 # Saber cual es el valor nulo
 print("Null Data: \n",nulls)

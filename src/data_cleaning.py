@@ -9,13 +9,13 @@ conn, cursor = establecer_conexion()
 query = "SELECT * FROM grammy_awards"
 
 # Leer los datos en un DataFrame de pandas
-df = pd.read_sql_query(query, conn)
-df
+grammy = pd.read_sql_query(query, conn)
+grammy
 
 # Reemplazar los valores nulos de Worker, por trabajador desconocido
-df['workers'] = df['workers'].fillna("Unknown Worker")
-print(df['workers'].isnull().sum())
+grammy['workers'] = grammy['workers'].fillna("Unknown Worker")
+print(grammy['workers'].isnull().sum())
 
 # Reemplazar los valor nulos de nominee, por desconocido
-df['nominee'] = df['nominee'].fillna("Unknown")
-print(df['nominee'].isnull().sum())
+grammy['nominee'] = grammy['nominee'].fillna("Unknown")
+print(grammy['nominee'].isnull().sum())
