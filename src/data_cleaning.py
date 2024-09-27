@@ -25,10 +25,15 @@ grammy['img'] = grammy['img'].fillna("https://soundimaging.com/wp-content/upload
 import pandas as pd
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-from db_conexion import API_conexion
+
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join('..', 'Notebooks')))
+from API_conexion import client_id,client_secret
 
 # Credenciales de la API de Spotify (debes reemplazar estos valores por tus credenciales)
-client_id, client_secret = API_conexion()
+client_id = client_id
+client_secret = client_secret
 
 # Autenticación con la API de Spotify
 auth_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
