@@ -1,5 +1,7 @@
 .venv
 
+.cache
+
 spotify_updated.csv
 
 __pycache__
