@@ -6,7 +6,7 @@ def upload_to_drive(file_path, file_name):
     gauth = GoogleAuth()
 
     # Cargar el archivo de credenciales desde una ruta específica
-    gauth.LoadClientConfigFile("D:/QuintoSemestre/ETL/Grammy_Analysis/src/client_secret_592373251463-ltn5slkt5devg7r52gnv98iiilg56r07.apps.googleusercontent.com.json")  # Cambia la ruta aquí
+    gauth.LoadClientConfigFile("../src/client_secret_592373251463-ltn5slkt5devg7r52gnv98iiilg56r07.apps.googleusercontent.com.json")  # Cambia la ruta aquí
 
     # Autenticación en el navegador
     gauth.LocalWebserverAuth()
@@ -27,5 +27,5 @@ def upload_to_drive(file_path, file_name):
 
 
 # Llamar a la función con la ruta de tu archivo
-csv_file_path = 'D:/QuintoSemestre/ETL/Grammy_Analysis/data/merged.csv'
+csv_file_path = '../data/merged.csv'
 upload_to_drive(csv_file_path, 'merged.csv')
