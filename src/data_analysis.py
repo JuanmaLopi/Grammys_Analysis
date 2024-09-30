@@ -3,12 +3,15 @@ import pandas as pd
 spotify_merge = pd.read_csv('D:/QuintoSemestre/ETL/Grammy_Analysis/data/spotify_updated.csv')
 grammy_merge = pd.read_csv('D:/QuintoSemestre/ETL/Grammy_Analysis/data/grammys_updated.csv')
 
+spotify_merge = pd.read_csv('../data/spotify_updated.csv')
+grammy_merge = pd.read_csv('../data/grammys_updated.csv')
+
 # Limpiar y normalizar los nombres de las canciones
-grammy_merge['artist_clean'] = grammy_merge['artist'].str.strip().str.lower()
-spotify_merge['artists_clean'] = spotify_merge['artists'].str.strip().str.lower()
+grammy_merge['nominee_clean'] = grammy_merge['nominee'].str.strip().str.lower()
+spotify_merge['track_name_clean'] = spotify_merge['track_name'].str.strip().str.lower()
 
 # Realizar un left join basado en los nombres de las canciones limpias
-merged_df = grammy_merge.merge(spotify_merge, how='left', left_on='artist_clean', right_on='artists_clean')
+merged_df = grammy_merge.merge(spotify_merge, how='left', left_on='nominee_clean', right_on='track_name_clean')
 
 # Comprobar la cantidad de filas después del merge
 merged_count = merged_df.shape[0]
@@ -16,12 +19,12 @@ print(f"Cantidad de filas después del merge: {merged_count}")
 
 # Si no se alcanzan 4000 filas, cambiar a outer join
 if merged_count < 4000:
-    merged_df = grammy_merge.merge(spotify_merge, how='outer', left_on='artist_clean', right_on='artists_clean')
+    merged_df = grammy_merge.merge(spotify_merge, how='outer', left_on='nominee_clean', right_on='track_name_clean')
     merged_count = merged_df.shape[0]
     print(f"Cantidad de filas después del outer join: {merged_count}")
 
 # Eliminar las columnas auxiliares
-merged = merged_df.drop(columns=['artist_clean', 'artists_clean', 'id_x','id_y'])
+merged = merged_df.drop(columns=['nominee_clean', 'track_name_clean', 'id_x','id_y'])
 
 merged['id'] = range(1, len(merged) + 1)
 

@@ -20,6 +20,8 @@ API_conexion.py
 
 .vscode
 
-src/client_secret_592373251463-ltn5slkt5devg7r52gnv98iiilg56r07.apps.googleusercontent.com.json
+src/client_secret.json
 
 src/Credentials.py
+
+Notebooks/client_secret.json
