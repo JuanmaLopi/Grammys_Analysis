@@ -2,6 +2,8 @@
 
 .cache
 
+src/merge.py
+
 spotify_updated.csv
 
 __pycache__
@@ -20,8 +22,15 @@ API_conexion.py
 
 .vscode
 
-src/client_secret.json
+credentials/client_secret.json
 
-src/Credentials.py
+credentials/Credentials.py
 
-Notebooks/client_secret.json
+data/grammys_updated_with_id.csv
+
+.env
+
+data/Grammy_And_Spotify_Merged.csv
+
+data/final_merged_spotify_grammys.csv
+

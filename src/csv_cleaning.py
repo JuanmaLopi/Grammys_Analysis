@@ -24,8 +24,6 @@ spotify['valence']=pd.to_numeric(spotify['valence'])
 spotify['speechiness']=pd.to_numeric(spotify['speechiness'])
 spotify['loudness']=pd.to_numeric(spotify['loudness'])
 
-spotify = spotify.drop(columns=['album_name'])
-
 spotify['duration_sec']=spotify['duration_ms']/1000
 spotify.drop(['duration_ms'], axis=1, inplace=True)
 
