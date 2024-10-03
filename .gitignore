@@ -2,13 +2,9 @@
 
 .cache
 
-src/merge.py
-
 spotify_updated.csv
 
 __pycache__
-
-db_conexion.py
 
 grammys_updated.csv
 
