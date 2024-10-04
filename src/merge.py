@@ -154,10 +154,11 @@ def merge():
 
     def main():
         # Cargar los archivos CSV
-        spotify_csv_path = os.path.join('data', 'spotify_updated.csv')
-        grammys_csv_path = os.path.join('data', 'grammys_updated_with_id.csv')
-        spotify_merge = pd.read_csv(spotify_csv_path)
-        grammy_merge = pd.read_csv(grammys_csv_path)
+        from db_cleaning import transform_db
+        from csv_cleaning import transform_csv
+
+        spotify_merge = transform_csv()
+        grammy_merge = transform_db()
 
         # Hacer el merge de los datasets
         final_merged_df = merge_datasets(grammy_merge, spotify_merge)
