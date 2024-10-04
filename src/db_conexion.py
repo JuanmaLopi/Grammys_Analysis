@@ -1,24 +1,36 @@
-import psycopg2
-import sys
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
 import os
-sys.path.append(os.path.abspath(os.path.join('..', 'credentials')))
-from Credentials import usuario, Password, Host, puerto, db
+
+# Cargar las variables de entorno desde el archivo .env
+load_dotenv()
+
+
 
 def establecer_conexion():
-    dbname=db
-    user=usuario
-    password=Password
-    host=Host
-    port=puerto
+    # Obtener las credenciales desde las variables de entorno
+    db = "WorkShop_02"
+    usuario = "postgres"
+    password = "root"
+    host ="localhost"
+    puerto = 5432
+    # Crear la cadena de conexión para SQLAlchemy
+    connection_string = f'postgresql+psycopg2://{usuario}:{password}@{host}:{puerto}/{db}'
+    engine = create_engine(connection_string)
+    
+    # Crear una sesión (opcional, si necesitas trabajar con ORM más adelante)
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
-    conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
-    print("Conexion exitosa a la base de datos")
-    cursor = conn.cursor()
+    print("Conexión exitosa a la base de datos")
+    return engine, session  # Devolver tanto el engine como la session si es necesario
 
-    return conn, cursor
+def cerrar_conexion(session):
+    session.close()
+    print("Conexión cerrada a la base de datos")
 
-def cerrar_conexion(conn):
-    conn.close()
-    print("Conexion cerrada a la base de datos")
+# Establecer la conexión
+engine, session = establecer_conexion()
 
-
+# Ahora puedes usar `engine` con pandas sin problema
