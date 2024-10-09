@@ -3,33 +3,33 @@ def upload_to_google_drive():
     from pydrive.drive import GoogleDrive
 
     def upload_to_drive(file_path, file_name):
-        # Autenticación con Google
+        # Authentication with Google
         gauth = GoogleAuth()
 
-        # Cargar el archivo de credenciales desde una ruta específica
-        gauth.LoadClientConfigFile("credentials/client_secret.json")  # Cambia la ruta aquí
+        # Load the credentials file from a specific path
+        gauth.LoadClientConfigFile("credentials/client_secret.json")  # Change the path here
 
-        # Autenticación en el navegador
+        # Authenticate in the browser
         gauth.LocalWebserverAuth()
 
-        # Crear cliente de Google Drive
+        # Create Google Drive client
         drive = GoogleDrive(gauth)
 
-        # Crear el archivo a subir
+        # Create the file to upload
         gfile = drive.CreateFile({'title': file_name})
 
-        # Establecer el contenido del archivo
+        # Set the content of the file
         gfile.SetContentFile(file_path)
 
-        # Subir el archivo
+        # Upload the file
         gfile.Upload()
 
-        print(f"El archivo '{file_name}' ha sido subido con éxito a Google Drive.")
+        print(f"The file '{file_name}' has been successfully uploaded to Google Drive.")
 
-
-    # Llamar a la función con la ruta de tu archivo
+    # Call the function with your file path
     csv_file_path = 'data/Grammy_And_Spotify_Merged.csv'
     upload_to_drive(csv_file_path, 'merged.csv')
 
 if __name__ == "__main__":
     upload_to_google_drive()
+

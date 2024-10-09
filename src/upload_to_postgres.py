@@ -6,26 +6,27 @@ def upload_to_postgres():
 
     load_dotenv()
 
-    # Paso 1: Lee el CSV
-    df = pd.read_csv(os.path.join('data', 'Grammy_And_Spotify_Merged.csv'))  # Lee el CSV en un DataFrame
+    # Step 1: Read the CSV
+    df = pd.read_csv(os.path.join('data', 'Grammy_And_Spotify_Merged.csv'))  # Read the CSV into a DataFrame
 
-    # Paso 2: Configura la conexión a PostgreSQL
-    usuario = "postgres"  # Reemplaza con tu usuario de PostgreSQL
-    password = "root"  # Reemplaza con tu contraseña
-    host = "localhost"  # Reemplaza si tu base de datos está en otro servidor
-    puerto = 5432  # Puerto por defecto de PostgreSQL
-    db = "WorkShop_02"  # Reemplaza con el nombre de tu base de datos
+    # Step 2: Set up the connection to PostgreSQL
+    usuario = "postgres"  # Replace with your PostgreSQL user
+    password = "root"  # Replace with your password
+    host = "localhost"  # Replace if your database is on another server
+    puerto = 5432  # Default PostgreSQL port
+    db = "WorkShop_02"  # Replace with your database name
 
-    # Crea la cadena de conexión
+    # Create the connection string
     engine = create_engine(f'postgresql://{usuario}:{password}@{host}:{puerto}/{db}')
 
-    # Paso 3: Subir los datos del CSV a una tabla de PostgreSQL
-    # Puedes especificar el nombre de la tabla y si deseas reemplazar o añadir los datos
-    nombre_tabla = "merged"   # Reemplaza con el nombre de tu tabla
+    # Step 3: Upload the data from the CSV to a PostgreSQL table
+    # You can specify the table name and whether to replace or append the data
+    nombre_tabla = "merged"  # Replace with your table name
     df.to_sql(nombre_tabla, engine, if_exists='replace', index=False)
 
-    print(f'Datos subidos a la tabla {nombre_tabla} correctamente')
+    print(f'Data uploaded to table {nombre_tabla} successfully')
 
 if __name__ == "__main__":
     upload_to_postgres()
+
 

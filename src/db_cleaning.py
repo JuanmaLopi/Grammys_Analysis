@@ -9,7 +9,7 @@ import os
 import math
 
 def transform_db():
-    # Cargar las credenciales de Spotify y autenticar
+    # Load Spotify credentials and authenticate
     load_dotenv()
     client_id = os.getenv('SPOTIFY_CLIENT_ID')
     client_secret = os.getenv('SPOTIFY_CLIENT_SECRET')
@@ -19,70 +19,69 @@ def transform_db():
     grammy = read_db()
 
     if grammy is None or not isinstance(grammy, pd.DataFrame):
-        print("Error: La función read_db() no retornó datos válidos.")
+        print("Error: The read_db() function did not return valid data.")
         return
 
-    # Relleno de valores nulos
+    # Filling missing values
     grammy['workers'] = grammy['workers'].fillna("Unknown Worker")
     grammy['nominee'] = grammy['nominee'].fillna("Unknown")
     grammy['img'] = grammy['img'].fillna("https://soundimaging.com/wp-content/uploads/2020/12/coming.jpeg")
     
-    print("Valores nulos en 'workers', 'nominee', e 'img' rellenos")
+    print("Missing values in 'workers', 'nominee', and 'img' filled.")
 
-    # Función para obtener artistas de una lista de canciones usando la API de Spotify
-    def obtener_artistas_de_canciones(nombres_canciones):
-        artistas = []
-        for nombre_cancion in nombres_canciones:
+    # Function to get artists for a list of songs using the Spotify API
+    def get_artists_from_songs(song_names):
+        artists = []
+        for song_name in song_names:
             try:
-                # Buscar hasta 50 canciones en una sola consulta (límite de la API de Spotify)
-                resultados = sp.search(q=f'track:{nombre_cancion}', type='track', limit=1)
-                if resultados['tracks']['items']:
-                    artistas.append(resultados['tracks']['items'][0]['artists'][0]['name'])
+                # Search up to 50 songs in a single query (Spotify API limit)
+                results = sp.search(q=f'track:{song_name}', type='track', limit=1)
+                if results['tracks']['items']:
+                    artists.append(results['tracks']['items'][0]['artists'][0]['name'])
                 else:
-                    artistas.append(None)
+                    artists.append(None)
             except Exception as e:
-                print(f"Error buscando la canción {nombre_cancion}: {e}")
-                artistas.append(None)
-        return artistas
+                print(f"Error searching for song {song_name}: {e}")
+                artists.append(None)
+        return artists
 
-    # Uso de ThreadPoolExecutor para paralelizar las búsquedas de artistas en grupos
-    def rellenar_artistas(grammy, batch_size=50):
-        artistas = []
-        # Agrupar las búsquedas en lotes para optimizar llamadas a la API
+    # Use ThreadPoolExecutor to parallelize artist lookups in batches
+    def fill_artists(grammy, batch_size=50):
+        artists = []
+        # Group searches into batches to optimize API calls
         for i in range(0, len(grammy), batch_size):
-            batch = grammy['nominee'].iloc[i:i+batch_size].tolist()
+            batch = grammy['nominee'].iloc[i:i + batch_size].tolist()
             with ThreadPoolExecutor(max_workers=10) as executor:
-                artistas_batch = list(executor.map(obtener_artistas_de_canciones, [batch]))
-            artistas.extend(artistas_batch)
-        return artistas
+                artists_batch = list(executor.map(get_artists_from_songs, [batch]))
+            artists.extend(artists_batch)
+        return artists
 
-    print("Comienza proceso de relleno de artistas")
-    logging.info("Comienza proceso de relleno de artistas")
+    print("Starting artist filling process")
+    logging.info("Starting artist filling process")
     
-    # Rellenar artistas
+    # Fill artists
     if 'artist' in grammy.columns:
         grammy['artist'] = grammy['artist'].fillna("Unknown")
     else:
         grammy['artist'] = ["Unknown"] * len(grammy)
 
-    # Solo rellenar los valores nulos en la columna 'artist'
+    # Only fill missing values in the 'artist' column
     mask = grammy['artist'] == "Unknown"
-    grammy.loc[mask, 'artist'] = rellenar_artistas(grammy[mask])
+    grammy.loc[mask, 'artist'] = fill_artists(grammy[mask])
 
-    # Reemplazar valores nulos restantes en 'artist'
+    # Replace remaining missing values in 'artist'
     grammy['artist'] = grammy['artist'].fillna("Unknown Artist or Various Artists")
     
-    print("Termina proceso de relleno")
-    logging.info("Termina proceso de relleno")
+    print("Artist filling process completed.")
+    logging.info("Artist filling process completed.")
     
-    # Mostrar cantidad de valores nulos restantes
+    # Display the remaining null values
     print(grammy.isnull().sum())
 
-    # Guardar el archivo CSV actualizado (opcional)
+    # Save the updated CSV file (optional)
     # grammy.to_csv('data/grammys_updated.csv', index=False)
-    print("Archivo actualizado y guardado.")
+    print("Updated file saved.")
 
-    
     return grammy
 
 if __name__ == "__main__":

@@ -1,27 +1,28 @@
 import pandas as pd
-from db_conexion import establecer_conexion, cerrar_conexion
+from db_conexion import establish_connection, close_connection
 from dotenv import load_dotenv
 
-# Cargar las variables de entorno desde el archivo .env
+# Load environment variables from the .env file
 load_dotenv()
 
 def read_db():
-    # Establecer la conexión
-    connection = establecer_conexion()
+    # Establish the connection
+    connection = establish_connection()
 
-    # Consulta SQL para seleccionar los datos
+    # SQL query to select data
     query = "SELECT * FROM grammy_awards"
 
-    # Leer los datos en un DataFrame de pandas
+    # Read the data into a pandas DataFrame
     try:
-        # Usar pandas para leer directamente desde la conexión
+        # Use pandas to read directly from the connection
         grammy = pd.read_sql_query(query, con=connection)
-        print("Datos cargados con éxito")
+        print("Data successfully loaded")
     except Exception as e:
-        print(f"Error al leer la base de datos: {e}")
-        grammy = pd.DataFrame()  # Retornar un DataFrame vacío en caso de error
+        print(f"Error reading the database: {e}")
+        grammy = pd.DataFrame()  # Return an empty DataFrame in case of an error
 
-    # Cerrar la conexión
-    cerrar_conexion(connection)
+    # Close the connection
+    close_connection(connection)
     
-    return grammy  # Retornar el DataFrame
+    return grammy  # Return the DataFrame
+

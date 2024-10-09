@@ -2,35 +2,35 @@ import psycopg2
 from dotenv import load_dotenv
 import os
 
-# Cargar las variables de entorno desde el archivo .env
+# Load environment variables from the .env file
 load_dotenv()
 
-def establecer_conexion():
-    # Obtener las credenciales desde las variables de entorno
+def establish_connection():
+    # Get credentials from environment variables
     db = "WorkShop_02"
-    usuario = os.getenv('DB_USER')
+    user = os.getenv('DB_USER')
     password = os.getenv('DB_PASS')
     host = os.getenv('DB_HOST')
-    puerto = 5432  # Puerto por defecto de PostgreSQL
+    port = 5432  # Default PostgreSQL port
 
-    # Crear una conexión a la base de datos
+    # Create a connection to the database
     connection = psycopg2.connect(
         dbname=db,
-        user=usuario,
+        user=user,
         password=password,
         host=host,
-        port=puerto
+        port=port
     )
     
-    print("Conexión exitosa a la base de datos")
-    return connection  # Devolver la conexión
+    print("Successfully connected to the database")
+    return connection  # Return the connection
 
-def cerrar_conexion(connection):
+def close_connection(connection):
     connection.close()
-    print("Conexión cerrada a la base de datos")
+    print("Database connection closed")
 
-# Establecer la conexión
-connection = establecer_conexion()
+# Establish the connection
+connection = establish_connection()
 
-# Cerrar la conexión al finalizar
-cerrar_conexion(connection)
+# Close the connection when done
+close_connection(connection)
